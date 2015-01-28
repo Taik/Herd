@@ -166,7 +166,7 @@ def transfer(host, local_file, remote_target, retry=0):
         while retry != 0:
             retry = retry - 1
             log.info("retrying on %s" % host)
-            transfer(host, local_file, remote_target, 0)
+            transfer(host, local_file, remote_target, retry)
     return host
 
 
