@@ -213,7 +213,10 @@ def seed(torrent, local_file):
 
 def local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("10.1.0.0", 0))
+    try:
+        s.connect(("10.1.0.0", 0))
+    except socket.error:
+        s.connect(("10.1.0.0", 10305))
     return s.getsockname()[0]
 
 
