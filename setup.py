@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Herd',
-    version='0.1.1',
+    version='0.1.2',
     author='Russ Garret',
     author_email='russ@garrett.co.uk',
     packages=['herd', 'herd.BitTornado', 'herd.BitTornado.BT1'],
