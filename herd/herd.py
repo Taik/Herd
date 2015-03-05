@@ -136,6 +136,7 @@ def run(local_file, remote_file, hosts):
 
 
 def transfer(host, local_file, remote_target, retry=0):
+    interpreter = opts['remote_interpreter'] or 'python'
     rp = opts['remote_path']
     file_name = os.path.basename(local_file)
     remote_file = '%s/%s' % (rp, file_name)
@@ -147,14 +148,16 @@ def transfer(host, local_file, remote_target, retry=0):
         scp(host, herd_py, '%s/herd.py' % rp)
     log.info("Copying %s to %s:%s" % (local_file, host, remote_file))
     scp(host, local_file, remote_file)
-    command = 'python %s/murder_client.py peer %s %s' % (
+    command = '%s %s/murder_client.py peer %s %s' % (
+        interpreter,
         rp,
         remote_file,
         remote_target)
     log.info("running \"%s\" on %s", command, host)
     result = ssh(host, command)
     if result == 0:
-        cmd = 'python %s/herd.py %s %s --seed True' % (
+        cmd = '%s %s/herd.py %s %s --seed True' % (
+            interpreter,
             rp,
             remote_file,
             remote_target)
@@ -301,6 +304,10 @@ def entry_point():
     parser.add_argument('--seed',
                         default=False,
                         help="Seed local file from torrent")
+
+    parser.add_argument('--remote-interpreter',
+                        default='python',
+                        help="The remote python interpreter to call.")
 
     opts = vars(parser.parse_args())
 
